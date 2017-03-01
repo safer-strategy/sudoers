@@ -13,6 +13,7 @@ Cmnd_Alias SHELLS = /bin/sh, /bin/csh, /bin/ksh, /bin/bash, /bin/tcsh
 Defaults   !visiblepw
 #Defaults group_plugin="/opt/quest/lib64/libsudo_vas.so"
 Defaults:funcacct !requiretty
+# Setup keystroke and session logging for PMsudo
 Defaults    log_output
 
 
