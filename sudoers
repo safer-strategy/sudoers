@@ -1,0 +1,36 @@
+# Default sudoers file
+Host_Alias     DEMOSERVERS = rh6, ubsrv, solsrv01
+Host_Alias     DBSERVERS = rh6, solsrv01
+
+Cmnd_Alias DBA = /bin/su - oracle, /usr/bin/su - oracle
+Cmnd_Alias DEMO = /usr/bin/id, /bin/id, /bin/whoami, /usr/bin/whoami
+Cmnd_Alias SAFECMND = /bin/cat, /usr/bin/cat, /bin/ls, /usr/bin/ls, /usr/bin/top, /usr/sbin/top
+Cmnd_Alias UNSAFE = /bin/vi, /usr/bin/man, /usr/bin/less, /bin/more /usr/bin/vim
+Cmnd_Alias SHELLS = /bin/sh, /bin/csh, /bin/ksh, /bin/bash, /bin/tcsh
+
+
+
+Defaults   !visiblepw
+#Defaults group_plugin="/opt/quest/lib64/libsudo_vas.so"
+Defaults:funcacct !requiretty
+Defaults    log_output
+
+
+# Systems Administrators
+root     ALL=(ALL)      ALL
+%wheel     ALL=(ALL)     ALL
+%unixadm     ALL=(ALL)     ALL
+ALL ALL=(ALL) NOLOG_OUTPUT:/bin/cat, /usr/bin/cat, /bin/ls, /usr/bin/ls, /usr/bin/top, /usr/sbin/top
+
+# TPAM Functional Account
+funcacct ALL=(root) NOPASSWD: /bin/grep
+funcacct ALL=(root) NOPASSWD: /usr/bin/passwd
+
+# Demo Rule
+%:unixusr  DEMOSERVERS=DEMO
+%unixadm ALL= NOEXEC: UNSAFE, !SHELLS
+
+# Fake DBA Policy
+%dbas     DBSERVERS=(oracle) ALL
+%dbas     DBSERVERS=DBA
+
